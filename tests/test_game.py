@@ -57,6 +57,17 @@ def test_no_actions_on_dead(civil, action):
         getattr(civil, action)()
 
 
+@pytest.mark.parametrize('role, action', [
+    ['mafia', 'mafia_kill'],
+    ['girl', 'take'],
+    ['sheriff', 'check'],
+])
+def test_no_action_on_self(role, action):
+    player = game.Player(role, 1)
+    with pytest.raises(game.GameError):
+        getattr(player, action)()
+
+
 @pytest.mark.parametrize('total, mafia, sheriff, doctor, girl', [
     [10, 3, True, True, False],
     [8, 2, True, False, False],
@@ -66,6 +77,7 @@ def test_no_actions_on_dead(civil, action):
 def test_game_normal_set(total, mafia, sheriff, doctor, girl):
     game.Game(total, mafia, sheriff, doctor, girl)
 
+
 @pytest.mark.parametrize('total, mafia, sheriff, doctor, girl', [
     [0, 0, False, False, False],
     [1, 2, False, False, False],
@@ -74,3 +86,20 @@ def test_game_normal_set(total, mafia, sheriff, doctor, girl):
 def test_game_incorrect_set(total, mafia, sheriff, doctor, girl):
     with pytest.raises(game.BadSettings):
         game.Game(total, mafia, sheriff, doctor, girl)
+
+
+@pytest.mark.parametrize('civil_count, mafia_count, result', [
+    [10, 3, None],
+])
+def test_check_game_status(civil_count, mafia_count, result):
+    g = game.Game(10, 3)
+    g.players = {}
+    for i in range(civil_count):
+        g.players[i] = game.Player('civil', i)
+    for j in range(mafia_count):
+        g.players[civil_count + j] = game.Player('mafia', civil_count + j)
+    if result:
+        with pytest.raises(result):
+            g.night_results()
+    else:
+        g.night_results()

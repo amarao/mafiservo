@@ -51,7 +51,7 @@ class Player(object):
 
     def take(self):
         if self.role == 'girl':
-            raise GameError("Girl shouldn't enterntain herself")
+            raise GameError("Girl shouldn't take herself")
         if not self.is_alive:
             raise GameError("Girl shouldn't enterntain dead")
 
@@ -92,9 +92,12 @@ class Game(object):
         self.is_doctor = is_doctor
         self.is_girl = is_girl
         self.players = {}
-        self.init_players()
+        self._init_players()
+        self.doctor_vote = None
+        self.mafia_vote = None
+        self.girl_vote = None
 
-    def init_players(self):
+    def _init_players(self):
         roles = ['mafia'] * self.mafia_num
         if self.is_doctor:
             roles += ['doctor']
