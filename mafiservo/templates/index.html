@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<header>
+  <title>
+    Mafiservo
+  </title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+</header>
+<body>
+<div class="container">
+      <h1 class="text-center">Mafiservo</h1>
+      <h2 class="text-center"><em>A local Mafia Server</em></h2>
+  <div class="row ">
+    <div class="col-6">
+      <form class="form-inline" action="/game.html?mode=join_game" method="POST">
+        <input type="game_id" placeholder="Game id" class="form-control" id="game_id">
+        <button class="btn btn-default text-center" type="submit">Join existing game</button>
+      </form>
+    </div>
+    <div class="col-6">
+      <a href="#new_game" class="btn text-center" data-toggle="collapse" area-expanded="false">Start a new game ...</a>
+      <form class="form-block collapse" id="new_game" action="/game.html?mode=new_game" method="POST">
+        <input type="number" placeholder="players (total)" id="players">
+        <input type="number" placeholder="Mafia members" id="mafia">
+        <br>
+        <label><input type="checkbox" id="sheriff"> Sheriff</label>
+        <label><input type="checkbox" id="sheriff"> Doctor</label>
+        <label><input type="checkbox" id="sheriff"> Girl</label>
+        <br>
+        <button type="submit">Start!</button>
+      </form>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+</body>
+</html>
