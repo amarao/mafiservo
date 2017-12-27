@@ -14,22 +14,25 @@
       <h2 class="text-center"><em>A local Mafia Server</em></h2>
   <div class="row ">
     <div class="col-6">
-      <form class="form-inline" action="/game.html?mode=join_game" method="POST">
-        <input type="game_id" placeholder="Game id" class="form-control" id="game_id">
+      <form class="form-inline" action="/new.html" method="POST">
+        <input type="game_id" name="game_id" placeholder="Game id" class="form-control" id="game_id">
         <button class="btn btn-default text-center" type="submit">Join existing game</button>
+        {% if notfound %}
+        <div class="alert alert-warning">No such game found</div>
+        {% endif %}
       </form>
     </div>
     <div class="col-6">
       <a href="#new_game" class="btn text-center" data-toggle="collapse" area-expanded="false">Start a new game ...</a>
-      <form class="form-block collapse" id="new_game" action="/game.html?mode=new_game" method="POST">
-        <input type="number" placeholder="players (total)" id="players">
-        <input type="number" placeholder="Mafia members" id="mafia">
+      <form class="form-block collapse" id="new_game" action="/game.html" method="POST">
+        <input type="text" name="civil" placeholder="players (total)">
+        <input type="number" name="mafia" placeholder="Mafia members">
         <br>
-        <label><input type="checkbox" id="sheriff"> Sheriff</label>
-        <label><input type="checkbox" id="sheriff"> Doctor</label>
-        <label><input type="checkbox" id="sheriff"> Girl</label>
+        <label><input type="checkbox" name="sheriff"> Sheriff</label>
+        <label><input type="checkbox" name="doctor"> Doctor</label>
+        <label><input type="checkbox" value="false" name="girl"> Girl</label>
         <br>
-        <button type="submit">Start!</button>
+        <button type="submit" value="sumbit">Start!</button>
       </form>
     </div>
   </div>

@@ -1,17 +1,31 @@
 from flask import Flask
 from flask import render_template
 from flask import request
+from flask import redirect
+from . import game
 
 app = Flask('mafiservo')
+games = {}
 
 
 @app.route('/')
 def menu():
-    return render_template("index.html")
+    notfound = (b'notfound' in request.query_string)
+    return render_template("index.html", notfound=notfound)
 
 
-@app.route('/game.html', methods=['POST'])
-def game():
-    import pdb
-    pdb.set_trace()
-    return request.form["players"]
+@app.route('/new.html', methods=['POST'])
+def new():
+    global games
+    game_id = request.form['game_id']
+    if game_id not in games:
+        return redirect('/?notfound')
+    game_cookie = request.cookies.get('game')
+    if game_cookie:
+        game, player_id = game_cookie.split('.')
+        #if game == game_id
+        #    join()
+    # new game
+    resp = redirect('/game.html')
+    #resp
+    return resp
