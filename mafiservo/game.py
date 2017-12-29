@@ -179,7 +179,7 @@ class Game(object):
         raise JoinError("Invalid hash")
 
     def join(self):
-        for player in self.players:
+        for player in self.players.values():
             if not player.hash:
                 player.hash = str(uuid.uuid4())
                 return (player.name, player.hash)

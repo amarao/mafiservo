@@ -1,7 +1,8 @@
 import random
 import math
+import time
 from flask import Flask
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, abort
 from . import game
 
 app = Flask('mafiservo')
@@ -26,12 +27,19 @@ def new_game_id():
             return game_id
 
 
+def process_cookie():
+    game_cookie = request.cookies.get('game')
+    if game_cookie:
+        game_name, player_id, hash = game_cookie.split('+')
+        return int(game_name), int(player_id), hash
+
+
 def set_cookie_and_game_redirect(game_id, player_id, hash):
     resp = redirect('/game.html')
     resp.set_cookie(
         'game',
         "%s+%s+%s" % (game_id, player_id, hash),
-        expires=24 * 3600
+        expires=int(time.time()) + 24 * 3600
     )
     return resp
 
@@ -44,7 +52,7 @@ def menu():
 
 
 @app.route('/join.html', methods=['POST'])
-def new():
+def join():
     global games
     game_id = int(request.form['game_id'])
     if game_id not in games:
@@ -52,7 +60,7 @@ def new():
 
     game_cookie = request.cookies.get('game')
     if game_cookie:
-        cookie_game, player_id, hash = game_cookie.split('.')
+        cookie_game, player_id, hash = game_cookie.split('+')
         if cookie_game == game_id:
             try:
                 games[game_id].rejoin()
@@ -65,15 +73,27 @@ def new():
 
 
 @app.route('/new.html', methods=['POST'])
-def join():
+def new():
     global games
     total = int(request.form['total'])
     mafia = int(request.form['mafia'])
-    sheriff = bool(request.form['sheriff'])
-    doctor = bool(request.form['doctor'])
-    girl = bool(request.form['girl'])
+    sheriff = bool(request.form.get('sheriff', True))
+    doctor = bool(request.form.get('doctor', True))
+    girl = bool(request.form.get('girl', False))
     new_game = game.Game(total, mafia, sheriff, doctor, girl)
     game_id = new_game_id()
     games[game_id] = new_game
     player_id, hash = games[game_id].join()
     return set_cookie_and_game_redirect(game_id, player_id, hash)
+
+
+@app.route('/game.html', methods=['POST', 'GET'])
+def main_game():
+    global games
+    game_id, player_id, hash = process_cookie()
+    if game_id not in games:
+        abort(403)
+    if games[game_id].players[player_id].hash != hash:
+        abort(403)
+    player = games[game_id].players[player_id]
+    return " ".join(map(str, (player.name, player.role, player.is_alive)))
