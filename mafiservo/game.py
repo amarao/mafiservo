@@ -10,6 +10,10 @@ class BadSettings(GameError):
     pass
 
 
+class JoinError(GameError):
+    pass
+
+
 class GameEnd(BaseException):
     '''
         not a normal Exception, just a signal that game has
@@ -29,7 +33,7 @@ class CivilsWon(GameEnd):
 class Player(object):
     def __init__(self, role, name):
         self.role = role
-        self.id = str(uuid.uuid4())
+        self.hash = None
         self.name = name
         self.is_alive = True
         self.self_healed = False
@@ -168,3 +172,16 @@ class Game(object):
             raise MafiaWon()
         if mafia_count == 0:
             raise CivilsWon()
+
+    def rejoin(self, player_id, hash):
+        if self.players[int(player_id)].hash == hash:
+            return hash
+        raise JoinError("Invalid hash")
+
+    def join(self):
+        for player in self.players:
+            if not player.hash:
+                player.hash = str(uuid.uuid4())
+                return (player.name, player.hash)
+        else:
+            raise JoinError("No free slots!")

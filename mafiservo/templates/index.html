@@ -14,17 +14,20 @@
       <h2 class="text-center"><em>A local Mafia Server</em></h2>
   <div class="row ">
     <div class="col-6">
-      <form class="form-inline" action="/new.html" method="POST">
+      <form class="form-inline" action="/join.html" method="POST">
         <input type="game_id" name="game_id" placeholder="Game id" class="form-control" id="game_id">
         <button class="btn btn-default text-center" type="submit">Join existing game</button>
         {% if notfound %}
         <div class="alert alert-warning">No such game found</div>
         {% endif %}
+        {% if bad_id %}
+        <div class="alert alert-warning">Erorr joining to the game. Old cookie cleared, try again to join as a new player.</div>
+        {% endif %}
       </form>
     </div>
     <div class="col-6">
       <a href="#new_game" class="btn text-center" data-toggle="collapse" area-expanded="false">Start a new game ...</a>
-      <form class="form-block collapse" id="new_game" action="/game.html" method="POST">
+      <form class="form-block collapse" id="new_game" action="/new.html" method="POST">
         <input type="text" name="civil" placeholder="players (total)">
         <input type="number" name="mafia" placeholder="Mafia members">
         <br>
