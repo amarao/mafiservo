@@ -100,6 +100,8 @@ class Game(object):
         self.doctor_vote = None
         self.mafia_vote = None
         self.girl_vote = None
+        self.control = str(uuid.uuid4())
+        self.turn = 1
 
     def _init_players(self):
         roles = ['mafia'] * self.mafia_num
@@ -158,6 +160,7 @@ class Game(object):
         self.doctor_vote = None
         self.girl_vote = None
         self.check_game_status()
+        self.turn += 1
         return results
 
     def check_game_status(self):
@@ -185,3 +188,8 @@ class Game(object):
                 return (player.name, player.hash)
         else:
             raise JoinError("No free slots!")
+
+    def list_alive(self):
+        for player in self.players.values():
+            if player.is_alive:
+                yield player.name

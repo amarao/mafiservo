@@ -84,7 +84,9 @@ def new():
     game_id = new_game_id()
     games[game_id] = new_game
     player_id, hash = games[game_id].join()
-    return set_cookie_and_game_redirect(game_id, player_id, hash)
+    resp = set_cookie_and_game_redirect(game_id, player_id, hash)
+    resp.set_cookie('control', new_game.control, expires=2**31)
+    return resp
 
 
 @app.route('/game.html', methods=['POST', 'GET'])
@@ -95,5 +97,8 @@ def main_game():
         abort(403)
     if games[game_id].players[player_id].hash != hash:
         abort(403)
+    control = (games[game_id].control == request.cookies.get('control'))
     player = games[game_id].players[player_id]
-    return " ".join(map(str, (player.name, player.role, player.is_alive)))
+    resp = render_template('game.html', control=control, player=player, game=games[game_id])
+    return resp
+    #return " ".join(map(str, (player.name, player.role, player.is_alive)))
