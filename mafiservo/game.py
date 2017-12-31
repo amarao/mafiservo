@@ -87,9 +87,9 @@ class Game(object):
             int(is_doctor) +
             int(is_girl)
         ):
-            raise BadSettings("Not enought players! No civils!")
+            raise BadSettings("Bad game settings, Civil number is too low!")
         if mafia_num * 2 >= total_players:
-            raise BadSettings("Too many mafia!")
+            raise BadSettings("Bad game settings, Mafia number is too high!")
         self.total_players = total_players
         self.mafia_num = mafia_num
         self.is_sheriff = is_sheriff
@@ -121,7 +121,11 @@ class Game(object):
     def day_kills(self, killed_players):
         for player_name in killed_players:
             self.player[player_name].die()
-        self.check_game_status()
+        return self.game_status()
+
+    def die(self, player_id):
+        self.players[player_id].die()
+        return self.game_status()
 
     def mafia_vote(self, vote):
         self.player[vote].mafia_kill()
@@ -163,18 +167,19 @@ class Game(object):
         self.turn += 1
         return results
 
-    def check_game_status(self):
+    def game_status(self):
         mafia_count = 0
         civil_count = 0
-        for player in self.players:
+        for player in self.players.values():
             if player.is_alive and player.role == 'mafia':
                 mafia_count += 1
             if player.is_alive and player.role != 'mafia':
                 civil_count += 1
         if mafia_count >= civil_count:
-            raise MafiaWon()
+            return "Mafia won"
         if mafia_count == 0:
-            raise CivilsWon()
+            raise "Civils won"
+        return "Game in progress"
 
     def rejoin(self, player_id, hash):
         if self.players[int(player_id)].hash == hash:
@@ -193,3 +198,9 @@ class Game(object):
         for player in self.players.values():
             if player.is_alive:
                 yield player.name
+
+    def is_ready(self):
+        for player in self.players.values():
+            if not player.hash:
+                return False
+        return True
