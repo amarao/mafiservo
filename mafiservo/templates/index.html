@@ -5,17 +5,12 @@
     Mafiservo
   </title>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
 </header>
 <body>
-<div class="container">
-      <h1 class="text-center">Mafiservo</h1>
-      <h2 class="text-center"><em>A local Mafia Server</em></h2>
-  <div class="row ">
-    <div class="col-6">
-      <form class="form-inline" action="/join.html" method="POST">
-        <input type="game_id" name="game_id" placeholder="Game id" class="form-control" id="game_id">
+  <h1>Mafiservo</h1>
+  <h2><em>A local Mafia Server</em></h2>
+      <form action="/join.html" method="POST">
+        <input type="number" placeholder="Game number">
         <button class="btn btn-default text-center" type="submit">Join existing game</button>
         {% if notfound %}
         <div class="alert alert-warning">No such game found</div>
@@ -24,24 +19,6 @@
         <div class="alert alert-warning">Erorr joining to the game. Old cookie cleared, try again to join as a new player.</div>
         {% endif %}
       </form>
-    </div>
-    <div class="col-6">
-      <a href="#new_game" class="btn text-center" data-toggle="collapse" area-expanded="true">Start a new game ...</a>
-      <form class="form-block collapse" id="new_game" action="/new.html" method="POST">
-        <input type="text" name="total" placeholder="players (total)">
-        <input type="number" name="mafia" placeholder="Mafia members">
-        <br>
-        <label><input type="checkbox" name="sheriff"> Sheriff</label>
-        <label><input type="checkbox" name="doctor"> Doctor</label>
-        <label><input type="checkbox" name="girl"> Girl</label>
-        <br>
-        <button type="submit" value="sumbit">Start!</button>
-      </form>
-    </div>
-  </div>
-</div>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+      Or you can <a href="new.html">Start a new game ...</a>
 </body>
 </html>

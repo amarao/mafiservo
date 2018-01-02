@@ -72,6 +72,11 @@ def join():
     return set_cookie_and_game_redirect(game_id, player_id, hash)
 
 
+@app.route('/new.html', methods=['GET'])
+def new_game_dialog():
+    return render_template('new.html')
+
+
 @app.route('/new.html', methods=['POST'])
 def new():
     global games
@@ -115,9 +120,9 @@ def main_game():
         return redirect('/not_ready.html')
     control = (games[game_id].control == request.cookies.get('control'))
     player = games[game_id].players[player_id]
-    resp = render_template('game.html', control=control, player=player, game=games[game_id])
+    resp = render_template(
+        'game.html', control=control, player=player, game=games[game_id])
     return resp
-    #return " ".join(map(str, (player.name, player.role, player.is_alive)))
 
 
 @app.route('/dead.html', methods=['GET'])
@@ -172,4 +177,4 @@ def not_ready():
         abort(403)
     if the_game.is_ready():
         return redirect('/game.html')
-    return render_template(not_ready.html, refresh=5)
+    return render_template('not_ready.html', refresh=5)
