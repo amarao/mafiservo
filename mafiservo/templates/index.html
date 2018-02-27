@@ -8,17 +8,24 @@
 </header>
 <body>
   <h1>Mafiservo</h1>
-  <h2><em>A local Mafia Server</em></h2>
-      <form action="/join.html" method="POST">
-        <input type="number" placeholder="Game number">
-        <button class="btn btn-default text-center" type="submit">Join existing game</button>
-        {% if notfound %}
-        <div class="alert alert-warning">No such game found</div>
-        {% endif %}
-        {% if bad_id %}
-        <div class="alert alert-warning">Erorr joining to the game. Old cookie cleared, try again to join as a new player.</div>
-        {% endif %}
-      </form>
-      Or you can <a href="new.html">Start a new game ...</a>
+  <form action="/mafia_register" method="POST">
+    <input autocomplete="off" type="number" name="player" placeholder="My player number">
+    <button type="submit">Register me as mafia</button>
+  </form><br>
+  <form action="/mafia_kill" method="POST">
+    <input autocomplete="off" type="number" name="player" placeholder="Player to kill">
+    <button type="submit">Mafia kill</button>
+  </form><br>
+  <form action="/sheriff_check" method="POST">
+    <input autocomplete="off" type="number"  name="player" placeholder="Player to check">
+    <button type="submit">Sheriff check</button>
+  </form><br>
+  <form action="/doctor_heal" method="POST">
+    <input autocomplete="off" type="number" name="player" placeholder="Player to heal">
+    <button type="submit">Doctor heal</button>
+  </form>
+  <br>
+  <a href="/last_kill">Show last night kill</a>
+
 </body>
 </html>
