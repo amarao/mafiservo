@@ -10,7 +10,7 @@
   <h1>Mafiservo</h1>
   <form action="/mafia_register" method="POST">
     <input autocomplete="off" type="number" name="player" placeholder="My player number">
-    <button type="submit">Register me as mafia</button>
+    <button type="submit">Register me as mafia</button> ({{mafia}})
   </form><br>
   <form action="/mafia_kill" method="POST">
     <input autocomplete="off" type="number" name="player" placeholder="Player to kill">
@@ -20,11 +20,12 @@
     <input autocomplete="off" type="number"  name="player" placeholder="Player to check">
     <button type="submit">Sheriff check</button>
   </form><br>
+  {% if doctor %}
   <form action="/doctor_heal" method="POST">
     <input autocomplete="off" type="number" name="player" placeholder="Player to heal">
     <button type="submit">Doctor heal</button>
-  </form>
-  <br>
+  </form><br>
+  {% endif %}
   <a href="/last_kill">Show last night kill</a>
 
 </body>
