@@ -8,6 +8,7 @@ MAFIA_COUNT = 3
 MAFIA_KILL = None
 DOCTOR_HEAL = None
 SHERIFF_MAY_CHECK = False
+SOUND = None
 app = Flask('mafiservo')
 
 if platform.system() == 'Linux':
@@ -21,11 +22,12 @@ else:
 class Config:
     mafia_count = 3
     is_doctor = False
-    delay_before_sound = 2
+    delay_before_sound = 3
     new_mafia = 'sounds/new_mafia.mp3'
     mafia_kill = 'sounds/shoot.mp3'
     sheriff = 'sounds/check.mp3'
     morning = 'sounds/morning.mp3'
+    status = 'sounds/status.mp3'
 
 
 def get_kill():
@@ -36,15 +38,19 @@ def get_kill():
     return "No one"
 
 
-def play(sound):
+def play(sound, delay):
     global Config
     global PLAYER
-    cmdline = 'sleep %s; %s %s' % (Config.delay_before_sound, PLAYER, sound)
+    cmdline = 'sleep %s; %s %s' % (delay, PLAYER, sound)
     subprocess.Popen(cmdline, shell=True, stdout=None, stdin=None)
 
 
 @app.route('/')
 def menu():
+    global SOUND
+    if SOUND:
+        play(SOUND, Config.delay_before_sound)
+    SOUND = None
     return render_template("index.html", mafia=Config.mafia_count, doctor=Config.is_doctor)
 
 
@@ -57,6 +63,7 @@ def last_kill():
             "fail.html",
             message="Not all mafia were registered"
         )
+    play(Config.status, 0)
     return render_template("status.html", player=get_kill())
 
 
@@ -64,6 +71,7 @@ def last_kill():
 def mafia_register():
     global MAFIA
     global Config
+    global SOUND
     if len(MAFIA) == Config.mafia_count:
         return render_template(
             "fail.html",
@@ -81,7 +89,7 @@ def mafia_register():
     MAFIA.append(request.form['player'])
     print("Mafia registered" + str(type(player)))
     if len(MAFIA) == Config.mafia_count:
-        play(Config.new_mafia)
+        SOUND = Config.new_mafia
     return render_template(
         "success.html",
         player=player,
@@ -96,6 +104,7 @@ def mafia_kill():
     global DOCTOR_HEAL
     global SHERIFF_MAY_CHECK
     global Config
+    global SOUND
     if len(MAFIA) != Config.mafia_count:
         return render_template(
             "fail.html",
@@ -109,7 +118,7 @@ def mafia_kill():
     DOCTOR_HEAL = None
     SHERIFF_MAY_CHECK = True
     print("Mafia killed %s" % player)
-    play(Config.mafia_kill)
+    SOUND = Config.mafia_kill
     return render_template(
         "success.html",
         player=player,
@@ -122,6 +131,7 @@ def doctor_heal():
     global MAFIA
     global DOCTOR_HEAL
     global Config
+    global SOUND
     if len(MAFIA) != Config.mafia_count:
         return render_template(
             "fail.html",
@@ -137,7 +147,7 @@ def doctor_heal():
         return render_template(
             "fail.html", message="No player ID was supplied")
     DOCTOR_HEAL = player
-    play(Config.morning)
+    SOUND = Config.morning
     return render_template(
         "success.html",
         player=player,
@@ -150,6 +160,7 @@ def sheriff_check():
     global MAFIA
     global SHERIFF_MAY_CHECK
     global Config
+    global SOUND
     if len(MAFIA) != Config.mafia_count:
         return render_template(
             "fail.html",
@@ -166,9 +177,9 @@ def sheriff_check():
         )
     SHERIFF_MAY_CHECK = False
     if Config.is_doctor:
-        play(Config.sheriff)
+        SOUND = Config.sheriff
     else:
-        play(Config.morning)
+        SOUND = Config.morning
     return render_template(
         "check_result.html",
         player=player,
