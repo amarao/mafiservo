@@ -88,7 +88,11 @@ def menu():
     )
     SOUND = None
     return render_template(
-        "index.html", mafia=Config.mafia_count, doctor=Config.is_doctor)
+        "index.html",
+        mafia=Config.mafia_count,
+        doctor=Config.is_doctor,
+        url=request.url
+    )
 
 
 @app.route('/last_kill')
