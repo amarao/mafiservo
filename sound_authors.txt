@@ -2,9 +2,8 @@ All sounds was found and adopted from http://freesound.org
 
 Following peope had contributed to this Game server:
 
-* `new_mafia.aiff`: by [nioczkus](https://freesound.org/people/nioczkus/sounds/396331/), CC-0
-* `check.wav`: by [keweldog](https://freesound.org/people/keweldog/sounds/181774/), CC-0
-* `shoot.wav`: by [twisterman](https://freesound.org/people/twisterman/sounds/163583/), CC-BY-SA
-* `morning.wav`: by [mhusinsky](https://freesound.org/people/mhusinsky/sounds/76440/) CC-BY-SA
-
-All files was slightly cropped, compressed, normalized at 4db and have fade in/fade out filters.
+* `new_mafia.mp3`: by [nioczkus](https://freesound.org/people/nioczkus/sounds/396331/), CC-0
+* `check.mp3`: by [keweldog](https://freesound.org/people/keweldog/sounds/181774/), CC-0
+* `shoot.mp3`: by [twisterman](https://freesound.org/people/twisterman/sounds/163583/), CC-BY-SA
+* `morning.mp3`: by [mhusinsky](https://freesound.org/people/mhusinsky/sounds/76440/) CC-BY-SA
+* `status.mp3`: by George Shuklin. CC-BY-SA/GPL-3 at your choice

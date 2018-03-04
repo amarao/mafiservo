@@ -6,11 +6,11 @@ Game sounds have different sources and have license of CC-0 or CC-BY-SA.
 Please refer to sound_authors.txt file for details.
 
 Authors:
-* George Shuklin (code)
-* nioczkus (sound)
-* keweldog (sound)
-* twisterman (sound)
-* mhusinsky (sound)
+* George Shuklin (code, status sound)
+* nioczkus (new_mafia sound)
+* keweldog (check sound)
+* twisterman (shoot sound)
+* mhusinsky (morning sound)
 
 
 
