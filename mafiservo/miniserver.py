@@ -22,10 +22,10 @@ class Config:
     mafia_count = 3
     is_doctor = False
     delay_before_sound = 2
-    new_mafia = 'sounds/new_mafia.mp3'
-    mafia_kill = 'sounds/mafia.mp3'
-    sheriff = 'sounds/sheriff.mp3'
-    morning = 'sounds/morning.mp3'
+    new_mafia = 'sounds/new_mafia.aiff'
+    mafia_kill = 'sounds/shoot.wav'
+    sheriff = 'sounds/check.wav'
+    morning = 'sounds/morning.wav'
 
 
 def get_kill():
@@ -40,7 +40,7 @@ def play(sound):
     global Config
     global PLAYER
     cmdline = 'sleep %s; %s %s' % (Config.delay_before_sound, PLAYER, sound)
-    subprocess.Popen(cmdline, shell=True)
+    subprocess.Popen(cmdline, shell=True, stdout=None, stdin=None)
 
 
 @app.route('/')
