@@ -1,7 +1,11 @@
 from flask import Flask
-from flask import render_template, request, redirect, abort
+from flask import render_template, request
 import platform
 import subprocess
+import os
+import time
+import atexit
+
 
 MAFIA = []
 MAFIA_COUNT = 3
@@ -11,6 +15,11 @@ SHERIFF_MAY_CHECK = False
 SOUND = None
 app = Flask('mafiservo')
 
+
+DEVNULL = os.open('/dev/null', os.O_RDWR)
+PRIVATE_LOG = []
+
+
 if platform.system() == 'Linux':
     PLAYER = 'mplayer'
 elif platform.system() == 'Darwin':
@@ -19,9 +28,28 @@ else:
     raise Exception("Unsupported OS: %s" % platform.system())
 
 
+def bilogger(public, private):
+    global PRIVATE_LOG
+    PRIVATE_LOG.append("%s [%s] %s" % (
+        time.strftime('%H:%M:%S'), request.remote_addr, private
+    ))
+    if public:
+        print(public)
+
+
+def dump_log():
+    print("Post-game log:\n\n")
+    for line in PRIVATE_LOG:
+        print(line)
+    print("\nEND")
+
+
+atexit.register(dump_log)
+
+
 class Config:
     mafia_count = 3
-    is_doctor = False
+    is_doctor = True
     delay_before_sound = 3
     new_mafia = 'sounds/new_mafia.mp3'
     mafia_kill = 'sounds/shoot.mp3'
@@ -41,17 +69,26 @@ def get_kill():
 def play(sound, delay):
     global Config
     global PLAYER
+    global DEVNULL
+    bilogger(private="Playing sound %s" % SOUND, public=None)
     cmdline = 'sleep %s; %s %s' % (delay, PLAYER, sound)
-    subprocess.Popen(cmdline, shell=True, stdout=None, stdin=None)
+    subprocess.Popen(
+        cmdline, shell=True, stdout=DEVNULL, stdin=DEVNULL, stderr=DEVNULL)
 
 
 @app.route('/')
 def menu():
     global SOUND
+    global request
     if SOUND:
         play(SOUND, Config.delay_before_sound)
+    bilogger(
+        public=None,
+        private="Start page requested"
+    )
     SOUND = None
-    return render_template("index.html", mafia=Config.mafia_count, doctor=Config.is_doctor)
+    return render_template(
+        "index.html", mafia=Config.mafia_count, doctor=Config.is_doctor)
 
 
 @app.route('/last_kill')
@@ -64,6 +101,11 @@ def last_kill():
             message="Not all mafia were registered"
         )
     play(Config.status, 0)
+    message = "Status requested: %s was killed" % get_kill()
+    bilogger(
+        public=message,
+        private=message
+    )
     return render_template("status.html", player=get_kill())
 
 
@@ -87,7 +129,10 @@ def mafia_register():
             message="Player %s is already registered" % player
         )
     MAFIA.append(request.form['player'])
-    print("Mafia registered" + str(type(player)))
+    bilogger(
+        public="Mafia member registered (%s of %s)" % (len(MAFIA), Config.mafia_count),
+        private="Player %s is registered as mafia" % player
+    )
     if len(MAFIA) == Config.mafia_count:
         SOUND = Config.new_mafia
     return render_template(
@@ -117,8 +162,11 @@ def mafia_kill():
     MAFIA_KILL = player
     DOCTOR_HEAL = None
     SHERIFF_MAY_CHECK = True
-    print("Mafia killed %s" % player)
     SOUND = Config.mafia_kill
+    bilogger(
+        public="Mafia selected a player",
+        private="Mafia selected player %s" % player
+    )
     return render_template(
         "success.html",
         player=player,
@@ -148,6 +196,10 @@ def doctor_heal():
             "fail.html", message="No player ID was supplied")
     DOCTOR_HEAL = player
     SOUND = Config.morning
+    bilogger(
+        public=None,
+        private="Doctor healed player %s" % player
+    )
     return render_template(
         "success.html",
         player=player,
@@ -180,8 +232,13 @@ def sheriff_check():
         SOUND = Config.sheriff
     else:
         SOUND = Config.morning
+    result = (player in MAFIA)
+    bilogger(
+        public=None,
+        private="Sheriff checked player %s (%s)" % (player, result)
+    )
     return render_template(
         "check_result.html",
         player=player,
-        result=(player in MAFIA)
+        result=result
     )
