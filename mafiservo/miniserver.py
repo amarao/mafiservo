@@ -22,10 +22,10 @@ class Config:
     mafia_count = 3
     is_doctor = False
     delay_before_sound = 2
-    new_mafia = 'sounds/new_mafia.aiff'
-    mafia_kill = 'sounds/shoot.wav'
-    sheriff = 'sounds/check.wav'
-    morning = 'sounds/morning.wav'
+    new_mafia = 'sounds/new_mafia.mp3'
+    mafia_kill = 'sounds/shoot.mp3'
+    sheriff = 'sounds/check.mp3'
+    morning = 'sounds/morning.mp3'
 
 
 def get_kill():

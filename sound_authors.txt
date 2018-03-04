@@ -6,4 +6,5 @@ Following peope had contributed to this Game server:
 * `check.wav`: by [keweldog](https://freesound.org/people/keweldog/sounds/181774/), CC-0
 * `shoot.wav`: by [twisterman](https://freesound.org/people/twisterman/sounds/163583/), CC-BY-SA
 * `morning.wav`: by [mhusinsky](https://freesound.org/people/mhusinsky/sounds/76440/) CC-BY-SA
-  (was edited to enhance loudness)
+
+All files was slightly cropped, compressed, normalized at 4db and have fade in/fade out filters.
