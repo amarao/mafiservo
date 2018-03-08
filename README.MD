@@ -1,3 +1,19 @@
+License and copyrights
+======================
+Code of this server is covered by GPL-3 license (see `LICENSE` file for
+license's text).
+Game sounds have different sources and have license of CC-0 or CC-BY-SA.
+Please refer to sound_authors.txt file for details.
+
+Authors:
+* George Shuklin (code, status sound)
+* nioczkus (new_mafia sound)
+* keweldog (check sound)
+* twisterman (shoot sound)
+* mhusinsky (morning sound)
+
+
+
 Mafiservo
 =========
 

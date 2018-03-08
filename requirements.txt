@@ -1,3 +1,2 @@
-gnuicorn
+gnuicorn3
 flask
-flask-socketio

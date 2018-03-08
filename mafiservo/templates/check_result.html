@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<header>
+  <title>
+    Mafiservo
+  </title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+</header>
+<body>
+  <h1>Mafiservo</h1>
+  {% if result %}
+  <p>Player {{player}} is a <strong>mafioso</strong>!!!</p>
+  {% else %}
+  <p>Player {{player}} is <strong>civil</strong>. </p>
+  {% endif %}
+  <p><a href="/">Back</a></p>
+</body>
