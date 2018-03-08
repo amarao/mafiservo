@@ -23,7 +23,7 @@ PRIVATE_LOG = []
 if platform.system() == 'Linux':
     PLAYER = 'mplayer'
 elif platform.system() == 'Darwin':
-    PLAYER = 'afpaly'
+    PLAYER = 'afplay'
 else:
     raise Exception("Unsupported OS: %s" % platform.system())
 
